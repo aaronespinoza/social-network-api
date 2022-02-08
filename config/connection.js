@@ -5,7 +5,8 @@ const connectionString =
 
 connect(connectionString, {
   useNewUrlParser: true,
-  useUnifiedTopoology: true,
+  //new mongo update doesn't support line below
+  //useUnifiedTopoology: true,
 });
 
 module.exports = connection;

@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
-const reactionSchema = require("./reaction");
-const moment = require("moment");
+const reactionSchema = require("./Reaction");
 
 const thoughtSchema = new Schema(
   {
@@ -13,7 +12,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: () => moment().format("LLL"),
+      get: (time) => new Date(time).toLocaleDateString(),
     },
     username: {
       type: String,
@@ -24,7 +23,6 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       getters: true,
-      virtuals: true,
     },
   }
 );
