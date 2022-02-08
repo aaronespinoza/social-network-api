@@ -2,18 +2,11 @@ const { User } = require("../models");
 
 module.exports = {
 
-    getUser(req, res) {
+    getUsers(req, res) {
     User.find()
-      .then(async (user) => {
-        const userObj = {
-          user,
-        };
-        return res.json(userObj);
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
+    .populate("thoughts")
+    .then((users) => res.json(users))
+    .catch((err) => res.status(500).json(err));
   },
 
 
@@ -35,15 +28,18 @@ module.exports = {
   createUser(req, res) {
     User.create(req.body)
       .then((user) => res.json(user))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json(err);
+      });
   },
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No such user exists" })
-          : Thought.deleteMany({ _id: { $in: course.user } })
-      )
+      // .then((user) =>
+      //   !user
+      //     ? res.status(404).json({ message: "No such user exists" })
+      //     : Thought.deleteMany({ _id: { $in: course.user } })
+      // )
       .then(() => res.json({ message: "User and thoughts deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
