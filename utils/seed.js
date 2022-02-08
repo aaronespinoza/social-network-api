@@ -22,3 +22,8 @@ connection.once("open", async () => {
 await User.collection.insertMany(users);
 
 await Thought.collection.insertOne;
+console.table(users);
+console.table(thoughts);
+console.table(reactions);
+console.info("Seeding complete!");
+process.exit(0);
