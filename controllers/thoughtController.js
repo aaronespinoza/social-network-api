@@ -27,7 +27,6 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
-  // PUT to update a thought by its _id
   updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -41,7 +40,6 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // DELETE to remove a thought by its _id
   deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.thoughtId })
       .then((thought) =>
@@ -64,3 +62,19 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
+  deleteReaction(req, res) {
+    Reaction.findOneAndDelete({ _id: req.params.reactionId })
+          .then((reaction) =>
+            !reaction
+              ? res.status(404).json({ message: "No reaction with that ID" })
+              : Thought.findOneAndUpdate(
+                  { reaction: req.params.reactionId },
+                  { $pull: { reaction: req.params.reactionId } },
+                  { new: true }
+                )
+          )
+          .then(() => res.json({ message: "Reaction deleted!" }))
+          .catch((err) => res.status(500).json(err));
+  },
+};
+    
